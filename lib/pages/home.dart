@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:carousel_slider/carousel_slider.dart'; // Import the CarouselSlider widget
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,129 +19,173 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color randomColor = getRandomColor();
+    Color getColour() {
+      return AdaptiveTheme.of(context).mode.isDark
+          ? Colors.white
+          : Colors.black;
+    }
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double baseFontSize = screenWidth * 0.05;
     final List<Widget> carouselItems = [
       Container(
-        color: Colors.red,
-        child: Center(
-            child: Text('RECHASE',
-                style: TextStyle(fontSize: 24, color: Colors.white))),
-      ),
-      Container(
-        color: Colors.green,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/alohomora.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
             child: Text('ALOHOMORA',
-                style: TextStyle(fontSize: 24, color: Colors.white))),
+                style: TextStyle(fontSize: baseFontSize, color: Colors.white))),
       ),
       Container(
-        color: Colors.blue,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withAlpha(120), BlendMode.colorDodge),
+            image: AssetImage('assets/images/REChase.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
-            child: Text('GEEKY SESSION',
-                style: TextStyle(fontSize: 24, color: Colors.white))),
+            child: Text('REChase',
+                style: TextStyle(fontSize: baseFontSize, color: Colors.white))),
       ),
       Container(
-        color: Colors.purple,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/vivek.jpeg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withAlpha(120), BlendMode.colorDodge)),
+        ),
+        child: Center(
+            child: Text('INTERNSHIP AND PLACEMENT TALKS',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: baseFontSize, color: Colors.white))),
+      ),
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/session.jpeg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withAlpha(120), BlendMode.colorDodge)),
+        ),
         child: Center(
             child: Text('SESSION WITH FACULTY ADVISOR',
-            textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, color: Colors.white))),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: baseFontSize, color: Colors.white))),
+      ),
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withAlpha(120), BlendMode.colorDodge),
+            image: AssetImage('assets/images/RECode.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+            child: Text('RECODE',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: baseFontSize, color: Colors.white))),
       ),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'REC',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              TextSpan(
-                text: 'ursion',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'assets/icons/logoInverted.svg',
-            colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
-          ),
-          onPressed: () {},
-        ),
-        actions: <Widget>[
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/logoInverted.svg',
+              colorFilter: ColorFilter.mode(getColour(), BlendMode.srcIn),
+              height: 30,
+              width: 30,
             ),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'REC',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: baseFontSize,
+                      color: getColour(),
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'ursion',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: baseFontSize,
+                      color: getColour(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.dark_mode),
+            onPressed: () {
+              AdaptiveTheme.of(context).mode.isDark
+                  ? AdaptiveTheme.of(context).setLight()
+                  : AdaptiveTheme.of(context).setDark();
+            },
           ),
         ],
       ),
-      endDrawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: ListView(
-            padding: EdgeInsets.only(top: 50.0),
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.message),
-                title: Text('askREC'),
-                onTap: () {
-                  // Handle the tap
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Blog'),
-                onTap: () {
-                  // Handle the tap
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Login'),
-                onTap: () {
-                  // Handle the tap
-                },
-              ),
-            ],
-          ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(''),
+            ),
+            ListTile(
+              title: Text('About Us'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Contact Us'),
+              onTap: () {},
+            ),
+          ],
         ),
       ),
       body: ListView(
-        shrinkWrap: true,
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 10, right: 0, top: 10, bottom: 0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'REC',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 100,
-                          color: Color.fromARGB(255, 35, 78, 85),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          'REC',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: baseFontSize * 13,
+                            color: getColour(),
+                          ),
                         ),
                       ),
                       Container(
@@ -148,8 +193,9 @@ class HomePage extends StatelessWidget {
                             top: 0.0, left: 20, right: 10, bottom: 0),
                         child: Text(
                           "We are the programming community of NIT Durgapur, with focus on improving coding culture institute wide by conducting regular lectures from beginner to advance topics of programming. Our goal is to increase student's participation in inter-collegiate contest like ACM-ICPC and help them get better.",
-                          style: TextStyle(color: Colors.black),
-                          softWrap: true, // Ensure text wraps
+                          style: TextStyle(
+                              color: getColour(), fontSize: baseFontSize * 0.8),
+                          softWrap: true,
                         ),
                       ),
                     ],
@@ -157,13 +203,13 @@ class HomePage extends StatelessWidget {
                 ),
                 RotatedBox(
                   quarterTurns: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10.0),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                       'URSION',
                       style: TextStyle(
-                        fontSize: 85,
-                        color: Color.fromARGB(255, 35, 78, 85),
+                        fontSize: baseFontSize * 4,
+                        color: getColour(),
                       ),
                     ),
                   ),
@@ -174,78 +220,215 @@ class HomePage extends StatelessWidget {
           Divider(
             height: 40,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  Text('New to Programming?'),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
-                    child: FilledButton(
-                      onPressed: () {},
-                      child: Text("Get Started"),
-                    ),
-                  ),
-                ],
+          Container(
+            height: 200,
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 200.0,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
               ),
-              SizedBox(
-                height: 40,
-                child: VerticalDivider(
-                  width: 20,
+              items: carouselItems
+                  .map((item) => Container(
+                        child: Center(
+                          child: item,
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+          Divider(
+            height: 40,
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TweenAnimationBuilder<int>(
+                  curve: Curves.easeOut,
+                  tween: IntTween(begin: 0, end: 600),
+                  duration: Duration(seconds: 5),
+                  builder: (context, value, child) {
+                    return Text(
+                      '$value+ hours of teaching',
+                      style: TextStyle(
+                        fontSize: baseFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: getColour(),
+                      ),
+                      textAlign: TextAlign.left,
+                    );
+                  },
+                ),
+                TweenAnimationBuilder<int>(
+                  curve: Curves.easeOut,
+                  tween: IntTween(begin: 0, end: 10),
+                  duration: Duration(seconds: 5),
+                  builder: (context, value, child) {
+                    return Text(
+                      '$value+ years of teaching',
+                      style: TextStyle(
+                        fontSize: baseFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: getColour(),
+                      ),
+                      textAlign: TextAlign.left,
+                    );
+                  },
+                ),
+                TweenAnimationBuilder<int>(
+                  curve: Curves.easeOut,
+                  tween: IntTween(begin: 0, end: 69),
+                  duration: Duration(seconds: 5),
+                  builder: (context, value, child) {
+                    return Text(
+                      '$value+ Offline/Online Contests',
+                      style: TextStyle(
+                        fontSize: baseFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: getColour(),
+                      ),
+                      textAlign: TextAlign.left,
+                    );
+                  },
+                ),
+                TweenAnimationBuilder<int>(
+                  curve: Curves.easeOut,
+                  tween: IntTween(begin: 0, end: 2000),
+                  duration: Duration(seconds: 5),
+                  builder: (context, value, child) {
+                    return Text(
+                      '$value+ hours of teaching',
+                      style: TextStyle(
+                        fontSize: baseFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: getColour(),
+                      ),
+                      textAlign: TextAlign.left,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            height: 40,
+          ),
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Made with ❤️ by RECursion',
+                  style: TextStyle(
+                    fontSize: baseFontSize * 0.75, // Adjusted font size
+                    color: getColour(),
+                  ),
                 ),
               ),
-              Column(
-                children: [
-                  Text('Have a Question?'),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
-                    child: FilledButton(
-                      onPressed: () {},
-                      child: Text("askREC"),
-                    ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextField(
+                  maxLength: 200,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'We would love your feedback!',
+                    labelStyle: TextStyle(
+                        fontSize: baseFontSize * 0.75), // Adjusted font size
                   ),
-                ],
+                  style: TextStyle(
+                      fontSize: baseFontSize * 0.75), // Adjusted font size
+                ),
               ),
             ],
           ),
-          Divider(
-            height: 20,
-          ),
           Container(
-              height: 500, // Set a fixed height for the carousel
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  height: double.infinity,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  viewportFraction: 0.8,
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Contact Us',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: baseFontSize * 0.75,
+                    fontWeight: FontWeight.bold,
+                    color: getColour(),
+                  ),
                 ),
-                items: carouselItems != null && carouselItems.isNotEmpty
-                    ? carouselItems
-                        .map((item) => Container(
-                              margin: EdgeInsets.all(5.0), // Add some margin
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    8.0), // Rounded corners
-                                color: Colors.grey[200], // Background color
-                              ),
-                              child: Center(
-                                child: item,
-                              ),
-                            ))
-                        .toList()
-                    : [
-                        Container()
-                      ], // Fallback if carouselItems is null or empty
-              )),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, color: getColour()),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'NIT Durgapur, West Bengal, India',
+                        style: TextStyle(
+                            fontSize: baseFontSize * 0.6, color: getColour()),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(Icons.phone, color: getColour()),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        '+91 84209 98766',
+                        style: TextStyle(
+                            fontSize: baseFontSize * 0.6, color: getColour()),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(Icons.email, color: getColour()),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'recursion.nit@gmail.com',
+                        style: TextStyle(
+                            fontSize: baseFontSize * 0.6, color: getColour()),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
+      ),
+      bottomNavigationBar: NavigationBar(
+        destinations: [
+          NavigationDestination(
+            icon: Badge(child: Icon(Icons.home_outlined)),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => {},
+        label: Text('askREC'),
+        icon: Icon(Icons.chat_bubble_outline),
       ),
     );
   }

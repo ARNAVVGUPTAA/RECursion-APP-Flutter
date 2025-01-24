@@ -1,5 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -11,14 +13,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(
-          Theme.of(context).textTheme,
-        ),
+    final textTheme = GoogleFonts.montserratTextTheme();
+
+    return AdaptiveTheme(
+      light: ThemeData.light(useMaterial3: true).copyWith(
+        textTheme: textTheme,
       ),
-      home: const HomePage(),
+      dark: ThemeData.dark(useMaterial3: true).copyWith(
+        textTheme: textTheme,
+      ),
+      initial: AdaptiveThemeMode.dark,
+      builder: (light, dark) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: light,
+        darkTheme: dark,
+        home: const HomePage(),
+      ),
     );
   }
 }
